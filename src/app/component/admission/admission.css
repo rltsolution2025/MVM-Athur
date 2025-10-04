@@ -1,0 +1,110 @@
+/* Admission Poster Styling */
+.admission-poster img {
+  max-width: 100%;              /* reduce poster size */
+  height: auto;                /* keep aspect ratio */
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease;
+  margin-top: -20px;
+  margin-left: -75px;
+}
+
+.admission-poster img:hover {
+  transform: scale(1.03);
+}
+
+
+/* === Admission Form Card === */
+form {
+  background: linear-gradient(135deg, #ffffff, #f1f8ff);
+  border-radius: 20px;
+  padding: 35px;
+  border: 2px solid #e6e6e6;
+  box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+form:hover {
+  transform: translateY(-3px);
+}
+
+/* Heading */
+h2 {
+  font-weight: 700;
+  color: #0d47a1;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.mandatory-fields {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #e53935;
+  font-weight: 500;
+}
+
+/* Labels */
+.form-label {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* Inputs */
+.form-control,
+.form-select,
+textarea {
+  border-radius: 12px;
+  border: 1.5px solid #ccc;
+  padding: 12px;
+  font-size: 15px;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus,
+textarea:focus {
+  border-color: #0d47a1;
+  box-shadow: 0px 0px 8px rgba(13, 71, 161, 0.4);
+  outline: none;
+}
+
+/* Radio Buttons */
+.form-check-input:checked {
+  background-color: #0d47a1;
+  border-color: #0d47a1;
+}
+
+.form-check-label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #444;
+}
+
+/* Error Message */
+.text-danger.small {
+  font-size: 13px;
+  margin-top: 5px;
+  font-style: italic;
+}
+
+/* Submit Button */
+button[type="submit"] {
+  background: linear-gradient(135deg, #0d47a1, #1976d2);
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background: linear-gradient(135deg, #1976d2, #2196f3);
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  transform: scale(0.97);
+}

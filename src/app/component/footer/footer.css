@@ -1,0 +1,169 @@
+.footer {
+    background: linear-gradient(135deg, #fdf9f9, #e6de79);
+    padding: 40px 20px 20px;
+    font-family: 'Merriweather', 'Times New Roman', serif;
+    color: #333;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+/* Left Section */
+.footer-left {
+    flex: 1 1 300px;
+    text-align: center;
+    font-weight: bolder;
+}
+
+.footer-logo {
+    display: flex;
+    align-items: flex-start;
+    text-decoration: none;
+    color: #333;
+}
+
+.footer-logo .logo {
+    width: 80px;
+    height: auto;
+    margin-right: 15px;
+}
+
+.footer-info .title {
+    font-weight: 700;
+    display: block;
+    color: #500303;
+}
+
+.footer-info .subtitle {
+    font-weight: 500;
+    display: block;
+    margin-top: 3px;
+    color: #500303;
+}
+
+.footer-info .address {
+    font-weight: 400;
+    font-size: 0.8rem;
+    margin-top: 3px;
+    color: #500303;
+}
+
+/* Contact Section */
+.footer-contact {
+    flex: 1 1 200px;
+}
+
+.footer-contact h5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-contact .contact {
+    display: block;
+    margin-bottom: 8px;
+    color: #5a1f03;
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.3s;
+}
+
+.footer-contact .contact i {
+    margin-right: 6px;
+}
+
+.footer-contact .contact:hover {
+    color: #0056b3;
+}
+
+/* Social Section */
+.footer-right {
+    flex: 1 1 150px;
+}
+
+.footer-right h5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.footer-social {
+  display: flex;
+  flex-direction: column; /* stack vertically */
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.footer-social .social-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* space between icon and text */
+  text-decoration: none;
+  color: #fff;
+  font-size: 0.95rem;
+  padding: 8px 12px;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+/* Background colors for each social platform */
+.footer-social .instagram {
+  background-color: #e4405f;
+}
+
+.footer-social .facebook {
+  background-color: #1877f2;
+}
+
+.footer-social .youtube {
+  background-color: #ff0000;
+}
+
+/* Hover effect */
+.footer-social .social-icon:hover {
+  opacity: 0.8;
+}
+
+.footer-social .social-icon i {
+  font-size: 1.2rem;
+}
+
+
+/* Footer Bottom */
+.footer-bottom {
+    text-align: center;
+    font-size: 0.9rem;
+    border-top: 1px solid #ccc;
+    padding: 10px 0;
+    background-color: #020202;
+    color: #fdf9f9;
+    font-weight: 800;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-left,
+    .footer-contact,
+    .footer-right {
+        flex: 1 1 100%;
+        text-align: center;
+    }
+
+    .footer-logo {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .footer-logo .logo {
+        margin-bottom: 10px;
+        margin-right: 0;
+    }
+}

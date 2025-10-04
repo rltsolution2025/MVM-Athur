@@ -1,0 +1,153 @@
+<!-- Hero Section -->
+<div class="hero-section text-center d-flex align-items-center justify-content-center">
+    <div class="overlay-1"></div>
+    <div class="hero-content text-white">
+        <h5 class="mb-2">Welcome to</h5>
+        <h1 class="mb-3">Maharishi Vidya Mandir</h1>
+        <p class="mb-4 lead">Empowering Every Child to Shine!</p>
+        <a routerLink="/about" class="btn btn-primary btn-lg">
+            Explore More <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+        <a routerLink="/contact" class="btn btn-cust btn-lg">
+            Contact Now <i class="fas fa-arrow-right ms-2"></i>
+        </a>
+    </div>
+</div>
+
+<!--Our Activities-->
+<div class="container-fluid">
+    <div class="row">
+        <!-- Left side: Cards -->
+        <div class="col-lg-8">
+            <div class="row g-3 justify-content-center">
+                <div class="col-6 col-md-3" *ngFor="let card of cards">
+                    <div class="card card-custom shadow">
+                        <div class="card-bg" [ngStyle]="{'background-image': 'url(' + card.image + ')'}">
+                            <div class="overlay-2">
+                                <h5 class="card-title">{{ card.title }}</h5>
+                                <p class="card-text">{{ card.content }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Right side: Content -->
+        <div class="col-lg-4 d-flex flex-column justify-content-center align-items-start right-side">
+            <span class="welcome-text">YOU ARE WELCOME</span>
+            <span class="welcome-subtext">Discover our Top School Child Benefits</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid welcome-note">
+    <div class="row align-items-center">
+
+        <div class="col-lg-6 col-md-12 note-left mb-4 mb-lg-0">
+            <h2 class="note-title">Welcome</h2>
+            <p class="note-subtext">
+                <strong>Maharishi Vidya Mandir (MVM)</strong> in Athur, Chengalpattu, is a well-established institution
+                affiliated with the CBSE board. The school is known for offering a holistic education that balances
+                academic rigor with extracurricular activities. Its approach focuses on nurturing the intellectual,
+                emotional, and social development of students, preparing them for future challenges.
+            </p>
+            <a routerLink="/about" class="btn btn-success">More</a>
+        </div>
+        <div class="col-lg-6 col-md-12 youtube-vdo d-flex justify-content-center">
+            <div class="video-container"
+                style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;">
+                <iframe src="https://www.youtube.com/embed/U_gL_4DkIHM" title="YouTube video player" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+                </iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Our Success -->
+<div class="container-fluid welcome-note py-5">
+    <h4 class="note-title text-left mb-5">The People Behind Our Success</h4>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let member of teamMembers">
+            <div class="card team-card h-100 text-center">
+                <img [src]="member.image" class="card-img-top" [alt]="member.name">
+                <div class="card-body">
+                    <h5 class="card-name-2">{{ member.name }}</h5>
+                    <p class="card-text-1">{{ member.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Support to the Students -->
+<div class="container-fluid welcome-note">
+    <h4 class="note-title text-left mb-5">We offer flexible support to Students</h4>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-5" *ngFor="let support of supportStudents">
+            <div class="card team-card-1 h-100 text-center">
+                <img [src]="support.image" class="card-img-top support-img" [alt]="support.name">
+                <div class="card-body">
+                    <h5 class="card-name-2">{{ support.name }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-6 mb-4" *ngFor="let supporter of supportStudent">
+            <div class="card team-card-1 h-100 text-center">
+                <img [src]="supporter.image" class="card-img-top support-img" [alt]="supporter.name">
+                <div class="card-body">
+                    <h5 class="card-name-2">{{ supporter.name }}</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Admission Poster Modal -->
+<div class="modal fade show" tabindex="-1" [ngClass]="{'d-block': showPoster}" role="dialog">
+    <div class="modal-dialog modal-lg modal-dialog-centered animate-popup">
+        <div class="modal-content poster-content">
+
+            <div class="modal-header border-0">
+                <button type="button" class="custom-close" (click)="closePoster()">✖</button>
+            </div>
+            <!-- Poster Image -->
+            <div class="modal-body text-center" routerOutlet="admission">
+                <img src="home-page/Maharishi Vidya Mandir Vijayadashami  admission.png"
+                    alt="Maharishi Vidya Mandir Admission Poster" class="img-fluid rounded poster-img"
+                    (click)="goToAdmission()" style="cursor:pointer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Precious Moments -->
+<div class="container-fluid welcome-note">
+    <h4 class="note-title text-left mb-5">Precious Moments</h4>
+    <div class="container">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100 carousel-img" src="home-page/precious-moment/precious moment 1.jpeg" alt="First slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100 carousel-img" src="home-page/precious-moment/Precious moment 2.jpeg" alt="Second slide">
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100 carousel-img" src="home-page/precious-moment/precious moment 3.jpeg" alt="Third slide">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,62 @@
+<div class="container-fluid contact-section">
+  <h3 class="title title-decor">Contact Us</h3>
+  <div class="row container-contact">
+
+    <!-- Left: Contact Info -->
+    <div class="col-lg-7 col-md-6 contact-info">
+      <!-- Address -->
+      <div class="sub-container">
+        <h5 class="sub-title"><i class="fa-solid fa-location-dot"></i> School Address</h5>
+        <a href="https://maps.app.goo.gl/EzgorydcSzzTQSD76?g_st=aw" target="_blank" class="sub-text">
+          No.1, School Road, Athur, Kongadu, Tamil Nadu 603101
+        </a>
+      </div>
+
+      <!-- Email -->
+      <div class="sub-container">
+        <h5 class="sub-title"><i class="fa-solid fa-envelope"></i> Email ID</h5>
+        <a href="mailto:maharishividyamandir.athur@gmail.com" class="sub-text">
+          maharishividyamandir.athur@gmail.com
+        </a>
+      </div>
+
+      <!-- Phone -->
+      <div class="sub-container">
+        <h5 class="sub-title"><i class="fa-solid fa-phone"></i> Call</h5>
+        <a class="contact" href="tel:+917397561010">+91 73975 61010</a><br>
+        <a class="contact" href="tel:+919677303403">+91 96773 03403</a>
+      </div>
+
+      <!-- Timing -->
+      <div class="sub-container">
+        <h5 class="sub-title"><i class="fa-solid fa-clock"></i> Our Timing</h5>
+        <span class="timing">Mon - Sat: 8.30 A.M - 4.30 P.M</span>
+        <span class="timing">Sun: Closed</span>
+      </div>
+    </div>
+
+    <!-- Right: Contact Form -->
+    <div class="col-lg-5 col-md-6">
+      <div class="form-container">
+        <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+          <input type="text" formControlName="name" placeholder="Your Name *">
+          <input type="email" formControlName="email" placeholder="Your Email *">
+          <input type="tel" formControlName="phone" placeholder="Your Contact Number *">
+          <input type="text" formControlName="location" placeholder="Your Current Location *">
+          <textarea formControlName="message" placeholder="Your Message (Optional)"></textarea>
+          <button class="btn btn-primary" type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Google Map -->
+  <!-- Google Map -->
+  <div class="map-container mt-5">
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3896.5090526941927!2d79.9501708!3d12.7318238!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3a52fb3852ba3ded%3A0x56c4c0c3939dce91!2sNo.1%2C%20School%20Road%2C%20Athur%2C%20Kongadu%2C%20Tamil%20Nadu%20603101!5e0!3m2!1sen!2sin!4v1727089800000!5m2!1sen!2sin"
+      width="100%" height="400" style="border:0; border-radius: 12px;" allowfullscreen="" loading="lazy"
+      referrerpolicy="no-referrer-when-downgrade">
+    </iframe>
+  </div>
+</div>

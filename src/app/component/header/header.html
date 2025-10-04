@@ -1,0 +1,69 @@
+<nav class="navbar navbar-expand-lg custom-bg shadow-sm sticky-top">
+  <div class="container-fluid">
+    <!-- Left Side Logo -->
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="MVM Logo.png" alt="Logo1" width="70" height="70" class="me-2">
+      <img src="mvm.png" alt="Logo2" width="70" height="70" class="me-2">
+    </a>
+
+    <!-- Navbar Toggle (for mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar Content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <!-- Center Menu -->
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 gap-3 me-2">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="home" routerLinkActive="active-link"
+            [routerLinkActiveOptions]="{ exact: true }">Home</a>
+        </li>
+        <li class="nav-item dropdown" [class.show]="isDropdownOpen" (mouseenter)="toggleDropdown(true)"
+          (mouseleave)="toggleDropdown(false)">
+
+          <a class="nav-link dropdown-toggle" routerLinkActive="active-link" role="button"
+            [attr.aria-expanded]="isDropdownOpen">
+            Academics
+          </a>
+
+          <ul class="dropdown-menu" [class.show]="isDropdownOpen">
+            <li>
+              <a class="dropdown-item" routerLink="labs" routerLinkActive="active-dropdown">Labs</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="events" routerLinkActive="active-dropdown">Events</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="awards" routerLinkActive="active-dropdown">Awards</a>
+            </li>
+            <li>
+              <a class="dropdown-item" routerLink="sports" routerLinkActive="active-dropdown">Sports</a>
+            </li>
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="contact" routerLinkActive="active-link">Contact</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="about" routerLinkActive="active-link">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="admissions" routerLinkActive="active-link">Admission</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center social-links ms-auto me-3">
+        <a href="https://www.instagram.com/mvmathurofficial?igsh=MXR5N2xkMXcwZmxpaA==" target="_blank" class="social-icon instagram">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/mvmcbseschool/" target="_blank" class="social-icon facebook">
+          <i class="fab fa-facebook"></i>
+        </a>
+        <a href="https://youtube.com/@maharishividyamandir-athur" target="_blank" class="social-icon youtube">
+          <i class="fab fa-youtube"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
