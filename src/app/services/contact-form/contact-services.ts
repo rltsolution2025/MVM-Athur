@@ -8,9 +8,15 @@ import { Observable } from 'rxjs';
 export class ContactServices {
   private baseUrl = 'https://mvm-athur.onrender.com/api/contact';
 
-  constructor(private http:HttpClient){}
+  constructor(private http: HttpClient) {}
 
-  submitContact(data:any):Observable<any>{
-    return this.http.post(this.baseUrl,data);
+  // Submit contact form
+  submitContact(data: any): Observable<any> {
+    return this.http.post(this.baseUrl, data);
+  }
+
+  // Optional: Get all contacts (for testing/admin)
+  getContacts(): Observable<any> {
+    return this.http.get(this.baseUrl);
   }
 }

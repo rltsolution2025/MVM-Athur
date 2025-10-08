@@ -6,11 +6,17 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdmissionServices {
-  private baseUrl = "https://mvm-athur.onrender.com/api/admission";
+  private baseUrl = 'https://mvm-athur.onrender.com/api/admission';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
+  // Submit admission form
   submitAdmission(data: any): Observable<any> {
     return this.http.post(this.baseUrl, data);
+  }
+
+  // Optional: Get all admissions (for testing/admin)
+  getAdmissions(): Observable<any> {
+    return this.http.get(this.baseUrl);
   }
 }
