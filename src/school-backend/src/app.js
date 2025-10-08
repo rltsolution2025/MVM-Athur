@@ -21,6 +21,11 @@ connectDB();
 app.use("/api/contact", contactRoutes);
 app.use("/api/admission", admissionRoutes);
 
+// ✅ Test route for Render health check
+app.get("/", (req, res) => {
+  res.send("✅ Backend is running successfully");
+});
+
 // Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Global Error:", err.message);
