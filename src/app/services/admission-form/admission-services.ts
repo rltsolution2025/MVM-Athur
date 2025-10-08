@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AdmissionServices {
-  private baseUrl = "https://mvm-athur-3soq.vercel.app/api/admission";
+  private baseUrl = "http://localhost:5000/api/admission";
 
   constructor(private http: HttpClient) { }
 
