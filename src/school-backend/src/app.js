@@ -9,11 +9,12 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// DB Connection
+// Connect to DB
 connectDB();
 
 // Routes
@@ -26,10 +27,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: err.message });
 });
 
-// Start Server
+// Render provides PORT environment variable automatically
 const PORT = process.env.PORT || 5000;
-const HOST = '0.0.0.0';
 
-app.listen(PORT, HOST, () => {
-  console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
