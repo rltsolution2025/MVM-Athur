@@ -10,29 +10,35 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+// ✅ Step 1: Enable CORS — put this BEFORE your routes and body parser
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
+
+// ✅ Step 2: Parse JSON and URL-encoded bodies
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// Connect to DB
+// ✅ Step 3: Connect to MongoDB
 connectDB();
 
-// Routes
+// ✅ Step 4: Routes
 app.use("/api/contact", contactRoutes);
 app.use("/api/admission", admissionRoutes);
 
-// ✅ Test route for Render health check
+// ✅ Step 5: Health check route for Render
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully");
 });
 
-// Global Error Handler
+// ✅ Step 6: Global Error Handler
 app.use((err, req, res, next) => {
   console.error("Global Error:", err.message);
   res.status(500).json({ message: err.message });
 });
 
-// Render provides PORT environment variable automatically
+// ✅ Step 7: Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${PORT}`);
