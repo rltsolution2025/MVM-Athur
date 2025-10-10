@@ -12,7 +12,7 @@ const app = express();
 
 // ✅ Step 1: Enable CORS — put this BEFORE your routes and body parser
 app.use(cors({
-  origin: true,
+  origin: "*",
   credentials: true,
 }));
 
