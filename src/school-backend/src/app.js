@@ -1,3 +1,4 @@
+// app.js
 import express from "express";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -10,10 +11,13 @@ dotenv.config();
 
 const app = express();
 
-// ✅ Step 1: Enable CORS — put this BEFORE your routes and body parser
+// ✅ Step 1: Enable CORS — allow requests from any domain
 app.use(cors({
-  origin: "*",
-  credentials: true,
+  origin: (origin, callback) => {
+    // allow requests with no origin like Postman or server-to-server
+    callback(null, true);
+  },
+  credentials: true, // allow cookies/auth headers
 }));
 
 // ✅ Step 2: Parse JSON and URL-encoded bodies
@@ -23,11 +27,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // ✅ Step 3: Connect to MongoDB
 connectDB();
 
-// ✅ Step 4: Routes
+// ✅ Step 4: API Routes
 app.use("/api/contact", contactRoutes);
 app.use("/api/admission", admissionRoutes);
 
-// ✅ Step 5: Health check route for Render
+// ✅ Step 5: Health check route
 app.get("/", (req, res) => {
   res.send("✅ Backend is running successfully");
 });
