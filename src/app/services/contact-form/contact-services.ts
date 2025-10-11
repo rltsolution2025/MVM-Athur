@@ -10,10 +10,11 @@ export class ContactServices {
 
   constructor(private http: HttpClient) {}
 
-  // Submit contact form
   submitContact(data: any): Observable<any> {
-    return this.http.post(this.baseUrl, data);
-  }
+  return this.http.post(this.baseUrl, data, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
 
   // Optional: Get all contacts (for testing/admin)
   getContacts(): Observable<any> {
