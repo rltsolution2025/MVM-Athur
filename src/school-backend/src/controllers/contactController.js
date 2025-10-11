@@ -3,8 +3,20 @@ import { sendContactEmails } from "../services/emailServices.js";
 
 export const submitContact = async (req, res) => {
   try {
-    const { name, email, phone, location, message } = req.body || {};
+    // ✅ Log the incoming request body
+    console.log("📩 Incoming Contact Request:", req.body);
 
+    // ✅ Ensure req.body exists
+    if (!req.body || Object.keys(req.body).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Request body is missing. Please send JSON data.",
+      });
+    }
+
+    const { name, email, phone, location, message } = req.body;
+
+    // ✅ Validate required fields
     if (!name || !email || !phone) {
       return res.status(400).json({
         success: false,
@@ -12,6 +24,7 @@ export const submitContact = async (req, res) => {
       });
     }
 
+    // ✅ Save to MongoDB
     const contact = await Contact.create({
       name,
       email,
@@ -23,6 +36,7 @@ export const submitContact = async (req, res) => {
 
     console.log("✅ Contact saved to MongoDB with ID:", contact._id);
 
+    // ✅ Send emails
     try {
       await sendContactEmails(contact);
       console.log("📧 Contact email sent successfully!");
@@ -30,6 +44,7 @@ export const submitContact = async (req, res) => {
       console.error("❌ Failed to send contact emails:", emailError.message);
     }
 
+    // ✅ Return success response
     res.status(201).json({
       success: true,
       message: "Contact form submitted successfully!",
