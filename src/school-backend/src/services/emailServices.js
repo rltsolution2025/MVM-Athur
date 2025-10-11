@@ -25,6 +25,7 @@ export const sendEmail = async (to, subject, text, html = null) => {
       html,
     });
     //console.log(`✅ Email sent to: ${to}`);
+    
   } catch (error) {
     //console.error(`❌ Failed to send email to ${to}:`, error.message);
   }

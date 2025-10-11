@@ -5,6 +5,7 @@ import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import admissionRoutes from "./routes/admissionRoutes.js";
 import cors from "cors";
+import statusRoutes from "./routes/statusRouter.js"
 
 dotenv.config();
 
@@ -37,9 +38,11 @@ app.use((err, req, res, next) => {
   console.error("Global Error:", err.message);
   res.status(500).json({ message: err.message });
 });
-
+app.use("/api/status", statusRoutes);
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
+
+
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Server running on port ${PORT}`);
 });
