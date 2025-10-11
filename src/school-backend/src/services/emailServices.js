@@ -1,68 +1,66 @@
 import nodemailer from "nodemailer";
 
 // ----------------------
-// Lazy transporter creation to ensure env variables are loaded
+// Create Gmail transporter
 // ----------------------
-const getTransporter = () => nodemailer.createTransport({
-  service: "gmail",
-  auth: {
-    user: process.env.EMAIL_USER, // Gmail address from .env
-    pass: process.env.EMAIL_PASS, // Gmail App Password from .env
-  },
-});
+const getTransporter = () =>
+  nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: process.env.EMAIL_USER, // Gmail address from .env
+      pass: process.env.EMAIL_PASS, // Gmail App Password from .env
+    },
+  });
 
 // ----------------------
-// Generic email sender
+// Generic email sender with logging
 // ----------------------
 export const sendEmail = async (to, subject, text, html = null) => {
   try {
-    const transporter = getTransporter(); // create transporter here
-    await transporter.sendMail({
+    const transporter = getTransporter();
+    const info = await transporter.sendMail({
       from: `"Maharishi Vidya Mandir" <${process.env.EMAIL_USER}>`,
       to,
       subject,
       text,
       html,
     });
-    //console.log(`✅ Email sent to: ${to}`);
-    
+    console.log(`✅ Email sent to: ${to} | MessageId: ${info.messageId}`);
   } catch (error) {
-    //console.error(`❌ Failed to send email to ${to}:`, error.message);
+    console.error(`❌ Failed to send email to ${to}:`, error.message);
+    console.error(error.stack);
+    throw error; // Propagate error so caller knows
   }
 };
 
 // ----------------------
-// 📩 CONTACT FORM EMAILS
+// CONTACT FORM EMAILS
 // ----------------------
 export const sendContactEmails = async (contactData) => {
   const { name, email, phone, location, message } = contactData;
 
-  // 1️⃣ Email to Admin
-  await sendEmail(
-    process.env.ADMIN_EMAIL,
-    `📩 New Contact Form Submission - ${name}`,
-    `You received a new contact enquiry:\n
-Name: ${name}
-Email: ${email}
-Phone: ${phone}
-Location: ${location}
-Message: ${message || "N/A"}`
-  );
+  try {
+    // Email to Admin
+    await sendEmail(
+      process.env.ADMIN_EMAIL,
+      `📩 New Contact Form Submission - ${name}`,
+      `You received a new contact enquiry:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLocation: ${location}\nMessage: ${message || "N/A"}`
+    );
 
-  // 2️⃣ Thank-you Email to User
-  await sendEmail(
-    email,
-    "✅ Thank You for Contacting Us!",
-    `Hello ${name},\n
-Thank you for reaching out to Maharishi Vidya Mandir School.
-We have received your enquiry and our team will respond shortly.\n
-Best Regards,
-Maharishi Vidya Mandir School`
-  );
+    // Thank-you Email to User
+    await sendEmail(
+      email,
+      "✅ Thank You for Contacting Us!",
+      `Hello ${name},\n\nThank you for reaching out to Maharishi Vidya Mandir School. Our team will respond shortly.\n\nBest Regards,\nMaharishi Vidya Mandir School`
+    );
+  } catch (error) {
+    console.error("❌ sendContactEmails failed:", error.message);
+    console.error(error.stack);
+  }
 };
 
 // ----------------------
-// 🎓 ADMISSION FORM EMAILS
+// ADMISSION FORM EMAILS
 // ----------------------
 export const sendAdmissionEmails = async (admissionData) => {
   const {
@@ -77,39 +75,30 @@ export const sendAdmissionEmails = async (admissionData) => {
     email,
   } = admissionData;
 
-  // Format DOB nicely
-  const formattedDOB = new Date(dob).toLocaleDateString();
+  const formattedDOB = dob ? new Date(dob).toLocaleDateString() : "N/A";
 
-  // 1️⃣ Email to Admin
-  await sendEmail(
-    process.env.ADMIN_EMAIL,
-    `🎓 New Admission Form Submission - ${studentName}`,
-    `You received a new admission application:\n
-Student Name: ${studentName}
-Date of Birth: ${formattedDOB}
-Class Applied: ${classApplied}
-Gender: ${gender}
-Address: ${address}
-Parent / Guardian: ${parent}
-Parent Name: ${parentName}
-Contact Number: ${contactNumber}
-Email ID: ${email}`
-  );
+  try {
+    // Email to Admin
+    await sendEmail(
+      process.env.ADMIN_EMAIL,
+      `🎓 New Admission Form Submission - ${studentName}`,
+      `You received a new admission application:\n\nStudent Name: ${studentName}\nDate of Birth: ${formattedDOB}\nClass Applied: ${classApplied}\nGender: ${gender || "N/A"}\nAddress: ${address || "N/A"}\nParent/Guardian: ${parent || "N/A"}\nParent Name: ${parentName || "N/A"}\nContact Number: ${contactNumber}\nEmail ID: ${email}`
+    );
 
-  // 2️⃣ Thank-you Email to Parent/User
-  await sendEmail(
-    email,
-    "🎓 Admission Enquiry Received!",
-    `Hello ${parentName},\n
-Thank you for submitting the admission form for ${studentName}.
-Our admissions team will review the details and get in touch with you soon.\n
-Best Regards,
-Maharishi Vidya Mandir School`
-  );
+    // Thank-you Email to Parent/User
+    await sendEmail(
+      email,
+      "🎓 Admission Enquiry Received!",
+      `Hello ${parentName || "Parent"},\n\nThank you for submitting the admission form for ${studentName}. Our admissions team will review the details and get in touch with you soon.\n\nBest Regards,\nMaharishi Vidya Mandir School`
+    );
+  } catch (error) {
+    console.error("❌ sendAdmissionEmails failed:", error.message);
+    console.error(error.stack);
+  }
 };
 
 // ----------------------
-// Optional: Test transporter on startup
+// Verify transporter on startup
 // ----------------------
 export const verifyTransporter = () => {
   const transporter = getTransporter();
