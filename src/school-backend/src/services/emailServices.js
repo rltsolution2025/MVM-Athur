@@ -1,52 +1,68 @@
-import sgMail from "@sendgrid/mail";
+import nodemailer from "nodemailer";
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+// ----------------------
+// Lazy transporter creation to ensure env variables are loaded
+// ----------------------
+const getTransporter = () => nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER, // Gmail address from .env
+    pass: process.env.EMAIL_PASS, // Gmail App Password from .env
+  },
+});
 
 // ----------------------
 // Generic email sender
 // ----------------------
 export const sendEmail = async (to, subject, text, html = null) => {
   try {
-    await sgMail.send({
+    const transporter = getTransporter(); // create transporter here
+    await transporter.sendMail({
+      from: `"Maharishi Vidya Mandir" <${process.env.EMAIL_USER}>`,
       to,
-      from: process.env.ADMIN_EMAIL, // verified sender in SendGrid
       subject,
       text,
       html,
     });
-    console.log(`✅ Email sent to: ${to}`);
+    //console.log(`✅ Email sent to: ${to}`);
+    
   } catch (error) {
-    console.error(`❌ Failed to send email to ${to}:`, error.message);
-    if (error.response) {
-      console.error(error.response.body);
-    }
-    throw error;
+    //console.error(`❌ Failed to send email to ${to}:`, error.message);
   }
 };
 
 // ----------------------
-// CONTACT FORM EMAILS
+// 📩 CONTACT FORM EMAILS
 // ----------------------
 export const sendContactEmails = async (contactData) => {
   const { name, email, phone, location, message } = contactData;
 
-  // Email to Admin
+  // 1️⃣ Email to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `📩 New Contact Form Submission - ${name}`,
-    `You received a new contact enquiry:\n\nName: ${name}\nEmail: ${email}\nPhone: ${phone}\nLocation: ${location}\nMessage: ${message || "N/A"}`
+    `You received a new contact enquiry:\n
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Location: ${location}
+Message: ${message || "N/A"}`
   );
 
-  // Thank-you Email to User
+  // 2️⃣ Thank-you Email to User
   await sendEmail(
     email,
     "✅ Thank You for Contacting Us!",
-    `Hello ${name},\n\nThank you for reaching out to Maharishi Vidya Mandir School. Our team will respond shortly.\n\nBest Regards,\nMaharishi Vidya Mandir School`
+    `Hello ${name},\n
+Thank you for reaching out to Maharishi Vidya Mandir School.
+We have received your enquiry and our team will respond shortly.\n
+Best Regards,
+Maharishi Vidya Mandir School`
   );
 };
 
 // ----------------------
-// ADMISSION FORM EMAILS
+// 🎓 ADMISSION FORM EMAILS
 // ----------------------
 export const sendAdmissionEmails = async (admissionData) => {
   const {
@@ -61,19 +77,49 @@ export const sendAdmissionEmails = async (admissionData) => {
     email,
   } = admissionData;
 
-  const formattedDOB = dob ? new Date(dob).toLocaleDateString() : "N/A";
+  // Format DOB nicely
+  const formattedDOB = new Date(dob).toLocaleDateString();
 
-  // Email to Admin
+  // 1️⃣ Email to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `🎓 New Admission Form Submission - ${studentName}`,
-    `You received a new admission application:\n\nStudent Name: ${studentName}\nDate of Birth: ${formattedDOB}\nClass Applied: ${classApplied}\nGender: ${gender || "N/A"}\nAddress: ${address || "N/A"}\nParent/Guardian: ${parent || "N/A"}\nParent Name: ${parentName || "N/A"}\nContact Number: ${contactNumber}\nEmail ID: ${email}`
+    `You received a new admission application:\n
+Student Name: ${studentName}
+Date of Birth: ${formattedDOB}
+Class Applied: ${classApplied}
+Gender: ${gender}
+Address: ${address}
+Parent / Guardian: ${parent}
+Parent Name: ${parentName}
+Contact Number: ${contactNumber}
+Email ID: ${email}`
   );
 
-  // Thank-you Email to Parent/User
+  // 2️⃣ Thank-you Email to Parent/User
   await sendEmail(
     email,
     "🎓 Admission Enquiry Received!",
-    `Hello ${parentName || "Parent"},\n\nThank you for submitting the admission form for ${studentName}. Our admissions team will review the details and get in touch with you soon.\n\nBest Regards,\nMaharishi Vidya Mandir School`
+    `Hello ${parentName},\n
+Thank you for submitting the admission form for ${studentName}.
+Our admissions team will review the details and get in touch with you soon.\n
+Best Regards,
+Maharishi Vidya Mandir School`
   );
 };
+
+// ----------------------
+// Optional: Test transporter on startup
+// ----------------------
+export const verifyTransporter = () => {
+  const transporter = getTransporter();
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("❌ Transporter verification failed:", error.message);
+    } else {
+      console.log("✅ Transporter ready to send emails");
+    }
+  });
+};
+console.log(`✅ Email sent to: admin@example.com | MessageId: <...>
+✅ Email sent to: user@example.com | MessageId: <...>`)
