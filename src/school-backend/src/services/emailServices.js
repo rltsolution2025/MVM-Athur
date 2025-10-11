@@ -11,7 +11,7 @@ const getTransporter = () => nodemailer.createTransport({
   },
 });
 
-// ----------------------
+// ---------------------- 
 // Generic email sender
 // ----------------------
 export const sendEmail = async (to, subject, text, html = null) => {
