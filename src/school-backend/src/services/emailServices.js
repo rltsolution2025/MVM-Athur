@@ -11,14 +11,14 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 // ----------------------
 // Generic email sender
 // ----------------------
-export const sendEmail = async (to, subject, text, html = null) => {
+export const sendEmail = async (to, subject, text, html = "") => {
   try {
     const msg = {
       to,
       from: process.env.ADMIN_EMAIL, // Must be verified in SendGrid
       subject,
       text,
-      html,
+      html: html || "", // Ensure html is always a string
     };
     await sgMail.send(msg);
     console.log(`✅ Email sent to: ${to}`);
@@ -114,8 +114,9 @@ export const verifyTransporter = async () => {
     await sgMail.send({
       to: process.env.ADMIN_EMAIL,
       from: process.env.ADMIN_EMAIL,
-      subject: "Test Email",
-      text: "✅ SendGrid transporter is working!",
+      subject: "✅ Test Email from MVM-Athur",
+      text: "SendGrid transporter is working properly!",
+      html: "<p>SendGrid transporter is working properly!</p>",
     });
     console.log("✅ SendGrid transporter ready to send emails");
   } catch (error) {
