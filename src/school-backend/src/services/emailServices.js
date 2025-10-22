@@ -1,39 +1,32 @@
-import nodemailer from "nodemailer";
+import sgMail from "@sendgrid/mail";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 // ----------------------
-// Lazy transporter creation to ensure env variables are loaded
+// Set SendGrid API Key
 // ----------------------
-// New transporter for Gmail with SSL and debug
-const getTransporter = () => nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true, // true for 465
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  logger: true, // logs info
-  debug: true,  // show SMTP traffic
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-
-// ---------------------- 
+// ----------------------
 // Generic email sender
 // ----------------------
 export const sendEmail = async (to, subject, text, html = null) => {
   try {
-    const transporter = getTransporter(); // create transporter here
-    await transporter.sendMail({
-      from: `"Maharishi Vidya Mandir" <${process.env.EMAIL_USER}>`,
+    const msg = {
       to,
+      from: process.env.ADMIN_EMAIL, // Must be verified in SendGrid
       subject,
       text,
       html,
-    });
-    //console.log(`✅ Email sent to: ${to}`);
-    
+    };
+    await sgMail.send(msg);
+    console.log(`✅ Email sent to: ${to}`);
   } catch (error) {
-    //console.error(`❌ Failed to send email to ${to}:`, error.message);
+    console.error(
+      `❌ Failed to send email to ${to}:`,
+      error.response?.body || error.message
+    );
   }
 };
 
@@ -83,7 +76,6 @@ export const sendAdmissionEmails = async (admissionData) => {
     email,
   } = admissionData;
 
-  // Format DOB nicely
   const formattedDOB = new Date(dob).toLocaleDateString();
 
   // 1️⃣ Email to Admin
@@ -115,17 +107,21 @@ Maharishi Vidya Mandir School`
 };
 
 // ----------------------
-// Optional: Test transporter on startup
+// Optional: Test SendGrid API on startup
 // ----------------------
-export const verifyTransporter = () => {
-  const transporter = getTransporter();
-  transporter.verify((error, success) => {
-    if (error) {
-      console.error("❌ Transporter verification failed:", error.message);
-    } else {
-      console.log("✅ Transporter ready to send emails");
-    }
-  });
+export const verifyTransporter = async () => {
+  try {
+    await sgMail.send({
+      to: process.env.ADMIN_EMAIL,
+      from: process.env.ADMIN_EMAIL,
+      subject: "Test Email",
+      text: "✅ SendGrid transporter is working!",
+    });
+    console.log("✅ SendGrid transporter ready to send emails");
+  } catch (error) {
+    console.error(
+      "❌ SendGrid transporter verification failed:",
+      error.response?.body || error.message
+    );
+  }
 };
-console.log(`✅ Email sent to: admin@example.com | MessageId: <...>
-✅ Email sent to: user@example.com | MessageId: <...>`)
