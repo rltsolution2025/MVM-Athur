@@ -7,6 +7,9 @@ import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import admissionRoutes from "./routes/admissionRoutes.js";
 import statusRoutes from "./routes/statusRouter.js";
+import { verifyTransporter } from "./services/emailServices.js";
+
+verifyTransporter(); // 
 
 // ----------------------
 // Load environment variables
