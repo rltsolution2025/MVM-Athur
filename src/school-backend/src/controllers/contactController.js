@@ -3,10 +3,8 @@ import { sendContactEmails } from "../services/emailServices.js";
 
 export const submitContact = async (req, res) => {
   try {
-    // ✅ Log the incoming request body
     console.log("📩 Incoming Contact Request:", req.body);
 
-    // ✅ Ensure req.body exists
     if (!req.body || Object.keys(req.body).length === 0) {
       return res.status(400).json({
         success: false,
@@ -16,7 +14,6 @@ export const submitContact = async (req, res) => {
 
     const { name, email, phone, location, message } = req.body;
 
-    // ✅ Validate required fields
     if (!name || !email || !phone) {
       return res.status(400).json({
         success: false,
@@ -24,7 +21,7 @@ export const submitContact = async (req, res) => {
       });
     }
 
-    // ✅ Save to MongoDB
+    // Save to MongoDB
     const contact = await Contact.create({
       name,
       email,
@@ -36,19 +33,17 @@ export const submitContact = async (req, res) => {
 
     console.log("✅ Contact saved to MongoDB with ID:", contact._id);
 
-    // ✅ Send emails
-    try {
-      await sendContactEmails(contact);
-      console.log("📧 Contact email sent successfully!");
-    } catch (emailError) {
-      console.error("❌ Failed to send contact emails:", emailError.message);
-    }
+    // Send emails asynchronously (non-blocking)
+    sendContactEmails(contact)
+      .then(() => console.log("📧 Contact email sent successfully!"))
+      .catch(err => console.error("❌ Failed to send emails:", err.message));
 
-    // ✅ Return success response
+    // Return success response immediately
     res.status(201).json({
       success: true,
       message: "Contact form submitted successfully!",
     });
+
   } catch (error) {
     console.error("❌ Contact form error (detailed):", error.stack);
     res.status(500).json({

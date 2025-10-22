@@ -3,13 +3,19 @@ import nodemailer from "nodemailer";
 // ----------------------
 // Lazy transporter creation to ensure env variables are loaded
 // ----------------------
+// New transporter for Gmail with SSL and debug
 const getTransporter = () => nodemailer.createTransport({
-  service: "gmail",
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // true for 465
   auth: {
-    user: process.env.EMAIL_USER, // Gmail address from .env
-    pass: process.env.EMAIL_PASS, // Gmail App Password from .env
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
+  logger: true, // logs info
+  debug: true,  // show SMTP traffic
 });
+
 
 // ---------------------- 
 // Generic email sender
