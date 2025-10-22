@@ -1,42 +1,48 @@
-import sgMail from "@sendgrid/mail";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
-
 dotenv.config();
 
 // ----------------------
-// Set SendGrid API Key
+// Create transporter for Gmail
 // ----------------------
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const getTransporter = () => nodemailer.createTransport({
+  host: "smtp.gmail.com",
+  port: 465,
+  secure: true, // true for 465
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS, // App password
+  },
+  logger: true,  // Logs SMTP info
+  debug: true,   // Show SMTP traffic
+});
 
-// ----------------------
+// ---------------------- 
 // Generic email sender
 // ----------------------
 export const sendEmail = async (to, subject, text, html = "") => {
   try {
-    const msg = {
+    const transporter = getTransporter();
+    await transporter.sendMail({
+      from: `"Maharishi Vidya Mandir" <${process.env.EMAIL_USER}>`,
       to,
-      from: process.env.ADMIN_EMAIL, // Must be verified in SendGrid
       subject,
       text,
-      html: html || "", // Ensure html is always a string
-    };
-    await sgMail.send(msg);
+      html, // optional HTML
+    });
     console.log(`✅ Email sent to: ${to}`);
   } catch (error) {
-    console.error(
-      `❌ Failed to send email to ${to}:`,
-      error.response?.body || error.message
-    );
+    console.error(`❌ Failed to send email to ${to}:`, error.message);
   }
 };
 
 // ----------------------
-// 📩 CONTACT FORM EMAILS
+// Contact form emails
 // ----------------------
 export const sendContactEmails = async (contactData) => {
   const { name, email, phone, location, message } = contactData;
 
-  // 1️⃣ Email to Admin
+  // Email to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `📩 New Contact Form Submission - ${name}`,
@@ -45,23 +51,29 @@ Name: ${name}
 Email: ${email}
 Phone: ${phone}
 Location: ${location}
-Message: ${message || "N/A"}`
+Message: ${message || "N/A"}`,
+    `<p>You received a new contact enquiry:</p>
+     <ul>
+       <li><strong>Name:</strong> ${name}</li>
+       <li><strong>Email:</strong> ${email}</li>
+       <li><strong>Phone:</strong> ${phone}</li>
+       <li><strong>Location:</strong> ${location}</li>
+       <li><strong>Message:</strong> ${message || "N/A"}</li>
+     </ul>`
   );
 
-  // 2️⃣ Thank-you Email to User
+  // Thank-you email to user
   await sendEmail(
     email,
     "✅ Thank You for Contacting Us!",
-    `Hello ${name},\n
-Thank you for reaching out to Maharishi Vidya Mandir School.
-We have received your enquiry and our team will respond shortly.\n
-Best Regards,
-Maharishi Vidya Mandir School`
+    `Hello ${name},\nThank you for reaching out to Maharishi Vidya Mandir School. We have received your enquiry and our team will respond shortly.`,
+    `<p>Hello ${name},</p>
+     <p>Thank you for reaching out to Maharishi Vidya Mandir School. We have received your enquiry and our team will respond shortly.</p>`
   );
 };
 
 // ----------------------
-// 🎓 ADMISSION FORM EMAILS
+// Admission form emails
 // ----------------------
 export const sendAdmissionEmails = async (admissionData) => {
   const {
@@ -78,7 +90,7 @@ export const sendAdmissionEmails = async (admissionData) => {
 
   const formattedDOB = new Date(dob).toLocaleDateString();
 
-  // 1️⃣ Email to Admin
+  // Email to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `🎓 New Admission Form Submission - ${studentName}`,
@@ -91,38 +103,41 @@ Address: ${address}
 Parent / Guardian: ${parent}
 Parent Name: ${parentName}
 Contact Number: ${contactNumber}
-Email ID: ${email}`
+Email ID: ${email}`,
+    `<p>You received a new admission application:</p>
+     <ul>
+       <li><strong>Student Name:</strong> ${studentName}</li>
+       <li><strong>Date of Birth:</strong> ${formattedDOB}</li>
+       <li><strong>Class Applied:</strong> ${classApplied}</li>
+       <li><strong>Gender:</strong> ${gender}</li>
+       <li><strong>Address:</strong> ${address}</li>
+       <li><strong>Parent / Guardian:</strong> ${parent}</li>
+       <li><strong>Parent Name:</strong> ${parentName}</li>
+       <li><strong>Contact Number:</strong> ${contactNumber}</li>
+       <li><strong>Email:</strong> ${email}</li>
+     </ul>`
   );
 
-  // 2️⃣ Thank-you Email to Parent/User
+  // Thank-you email to Parent/User
   await sendEmail(
     email,
     "🎓 Admission Enquiry Received!",
-    `Hello ${parentName},\n
-Thank you for submitting the admission form for ${studentName}.
-Our admissions team will review the details and get in touch with you soon.\n
-Best Regards,
-Maharishi Vidya Mandir School`
+    `Hello ${parentName},\nThank you for submitting the admission form for ${studentName}. Our admissions team will review the details and get in touch with you soon.`,
+    `<p>Hello ${parentName},</p>
+     <p>Thank you for submitting the admission form for ${studentName}. Our admissions team will review the details and get in touch with you soon.</p>`
   );
 };
 
 // ----------------------
-// Optional: Test SendGrid API on startup
+// Test transporter
 // ----------------------
-export const verifyTransporter = async () => {
-  try {
-    await sgMail.send({
-      to: process.env.ADMIN_EMAIL,
-      from: process.env.ADMIN_EMAIL,
-      subject: "✅ Test Email from MVM-Athur",
-      text: "SendGrid transporter is working properly!",
-      html: "<p>SendGrid transporter is working properly!</p>",
-    });
-    console.log("✅ SendGrid transporter ready to send emails");
-  } catch (error) {
-    console.error(
-      "❌ SendGrid transporter verification failed:",
-      error.response?.body || error.message
-    );
-  }
+export const verifyTransporter = () => {
+  const transporter = getTransporter();
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("❌ Transporter verification failed:", error.message);
+    } else {
+      console.log("✅ Transporter ready to send emails");
+    }
+  });
 };
