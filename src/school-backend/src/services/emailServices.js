@@ -99,3 +99,13 @@ export const sendAdmissionEmails = async (admissionData) => {
      <p>Thank you for submitting the admission form for ${studentName}. Our team will review and contact you soon.</p>`
   );
 };
+export const verifyTransporter = () => {
+  const transporter = getTransporter();
+  transporter.verify((error, success) => {
+    if (error) {
+      console.error("❌ Transporter verification failed:", error.message);
+    } else {
+      console.log("✅ Transporter ready to send emails");
+    }
+  });
+};
