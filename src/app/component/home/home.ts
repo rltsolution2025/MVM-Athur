@@ -29,7 +29,7 @@ export class Home implements OnInit {
     {
       title: 'Activity',
       content: 'Building Skills Beyond Classrooms',
-      image: 'home-page/cards-image/Activity.jpg'
+      image: 'home-page/cards-image/re-home.jpeg'
     },
     {
       title: 'Admission',
@@ -45,19 +45,24 @@ export class Home implements OnInit {
 
   teamMembers = [
     {
-      name: 'Dr. G.P. Thirumurugan',
+      name: 'Dr. G.P. THIRUMURUGAN',
       description: 'Our founders vision was to create a dynamic learning environment where students thrive academically and personally',
       image: 'home-page/founders/G.P. Thirumurugan.png'
     },
     {
-      name: 'Mrs. Rajalakshmi Thirumurugan',
+      name: 'Mrs.RAJALAKSHMI THIRUMURUGAN ',
       description: 'With a focus on innovation and excellence, our director fosters an atmosphere that encourages growth and achievement',
       image: 'home-page/founders/Rajalakshmi.jpg'
     },
     {
-      name: 'Mr. T. Karthik',
+      name: 'Mr. T. KARTHIK',
       description: 'Guided by experience and passion, our principal ensures the school provides a nurturing space for both academic and personal development',
       image: 'home-page/founders/T. Karthik.png'
+    },
+    {
+      name: 'Mr. T. NITISH',
+      description: 'Guided by experience and passion, our Technical Director ensures that delivers innovative, reliable, and future-ready solutions, fostering both technical excellence and organizational growth',
+      image: 'home-page/cards-image/Nitish.png'
     }
   ]
 
