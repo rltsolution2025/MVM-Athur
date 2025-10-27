@@ -1,8 +1,8 @@
-import brevo from "@getbrevo/brevo";
+import Brevo from "@getbrevo/brevo";
 import dotenv from "dotenv";
 dotenv.config();
 
-const apiInstance = new brevo.TransactionalEmailsApi();
+const apiInstance = new Brevo.TransactionalEmailsApi();
 apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
 
 try {
