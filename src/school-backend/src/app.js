@@ -9,7 +9,8 @@ import admissionRoutes from "./routes/admissionRoutes.js";
 import statusRoutes from "./routes/statusRouter.js";
 import { verifyTransporter } from "./services/emailServices.js";
 
-verifyTransporter(); // 
+verifyTransporter(); // ✅ call it here (just once during startup)
+ 
 
 // ----------------------
 // Load environment variables
