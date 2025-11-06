@@ -1,34 +1,45 @@
-import Brevo from "@getbrevo/brevo";
+import nodemailer from "nodemailer";
 import dotenv from "dotenv";
 dotenv.config();
 
-const apiInstance = new Brevo.TransactionalEmailsApi();
-apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
+/**
+ * ✅ Create a reusable transporter using Gmail SMTP
+ */
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
+  },
+});
 
-try {
-  const account = await accountApi.getAccount();
-  console.log("✅ API Verified:", account.email);
-} catch (error) {
-  console.error("❌ Invalid API key:", error.response?.body || error.message);
-}
+/**
+ * ✅ Verify transporter
+ */
+export const verifyTransporter = async () => {
+  try {
+    await transporter.verify();
+    console.log("✅ Gmail SMTP transporter verified successfully!");
+  } catch (error) {
+    console.error("❌ Gmail SMTP verification failed:", error.message);
+  }
+};
 
 /**
  * ✅ Generic email sender
  */
 export const sendEmail = async (to, subject, text, html = "") => {
   try {
-    const email = new Brevo.SendSmtpEmail();
-    email.sender = {
-      name: "Maharishi Vidya Mandir",
-      email: process.env.ADMIN_EMAIL,
+    const mailOptions = {
+      from: `"Maharishi Vidya Mandir" <${process.env.ADMIN_EMAIL}>`,
+      to,
+      subject,
+      text,
+      html,
     };
-    email.to = [{ email: to }];
-    email.subject = subject;
-    email.textContent = text;
-    if (html) email.htmlContent = html;
 
-    const result = await brevo.sendTransacEmail(email);
-    console.log(`✅ Email sent to: ${to} | Message ID: ${result?.messageId || "OK"}`);
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`✅ Email sent to: ${to} | Message ID: ${info.messageId}`);
   } catch (error) {
     console.error(`❌ Failed to send email to ${to}:`, error.message);
   }
@@ -40,17 +51,19 @@ export const sendEmail = async (to, subject, text, html = "") => {
 export const sendContactEmails = async (contactData) => {
   const { name, email, phone, location, message } = contactData;
 
+  // Send to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `📩 New Contact Form Submission - ${name}`,
-    `New enquiry received:\n
-    Name: ${name}
-    Email: ${email}
-    Phone: ${phone}
-    Location: ${location}
-    Message: ${message}`
+    `New enquiry received:
+Name: ${name}
+Email: ${email}
+Phone: ${phone}
+Location: ${location}
+Message: ${message}`
   );
 
+  // Auto reply to user
   await sendEmail(
     email,
     "✅ Thank You for Contacting Us!",
@@ -76,6 +89,7 @@ export const sendAdmissionEmails = async (admissionData) => {
 
   const formattedDOB = dob ? new Date(dob).toLocaleDateString("en-IN") : "N/A";
 
+  // Send to Admin
   await sendEmail(
     process.env.ADMIN_EMAIL,
     `🎓 New Admission Form Submission - ${studentName}`,
@@ -90,24 +104,10 @@ Contact: ${contactNumber}
 Email: ${email}`
   );
 
+  // Auto reply to parent
   await sendEmail(
     email,
     "🎓 Admission Enquiry Received!",
     `Hello ${parentName},\n\nThank you for submitting the admission form for ${studentName}.\nOur admissions team will contact you soon.\n\nWarm Regards,\nMaharishi Vidya Mandir School`
   );
-};
-
-/**
- * 🔍 Verify Brevo API Key (for testing)
- */
-export const verifyTransporter = async () => {
-  try {
-    const accountApi = new Brevo.AccountApi();
-    accountApi.authentications.apiKey.apiKey = process.env.BREVO_API_KEY;
-
-    const account = await accountApi.getAccount();
-    console.log("✅ Brevo API key verified for:", account.email);
-  } catch (error) {
-    console.error("❌ Invalid Brevo API key (401 Unauthorized). Please generate a new one.");
-  }
 };

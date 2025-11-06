@@ -7,17 +7,11 @@ import connectDB from "./config/db.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import admissionRoutes from "./routes/admissionRoutes.js";
 import statusRoutes from "./routes/statusRouter.js";
-import { verifyTransporter } from "./services/emailServices.js";
-
-verifyTransporter(); // ✅ call it here (just once during startup)
- 
 
 // ----------------------
 // Load environment variables
 // ----------------------
 dotenv.config({ path: path.resolve("./.env") });
-console.log("EMAIL_USER =", process.env.EMAIL_USER);
-console.log("EMAIL_PASS =", process.env.EMAIL_PASS ? "✅ Loaded" : "❌ Missing");
 
 // ----------------------
 // Initialize Express app
