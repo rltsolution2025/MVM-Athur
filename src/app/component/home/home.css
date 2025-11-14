@@ -41,6 +41,12 @@
     z-index: 2;
     max-width: 700px;
     padding: 20px;
+    text-align: left; /* Align text to the left */
+    position: absolute;
+    left: 0; /* Align the content to the left side */
+    top: 50%; /* Vertically center the content */
+    transform: translateY(-50%); /* Adjust to truly center vertically */
+    margin-top: 40px;
 }
 
 /* Subheading */
@@ -73,7 +79,6 @@
     margin-bottom: 20px;
     animation: fadeInDown 1s ease-in-out;
 }
-
 
 /* Tagline */
 .hero-section p {
@@ -114,6 +119,7 @@
     border-radius: 50px;
     transition: all 0.3s ease;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+    font-size: 12px;
 }
 
 .hero-section .btn-cust:hover {
