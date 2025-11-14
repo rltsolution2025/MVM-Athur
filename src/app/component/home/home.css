@@ -55,9 +55,9 @@
     animation: fadeInUp 1.2s ease-in-out;
 }
 
-.hero-section h1 {
-    font-weight: 700;
-    font-size: 3rem;
+.hero-section h3 {
+    font-weight: 900;
+    font-size: 1.7rem;
     background: linear-gradient(90deg, #f7d842, #ff8800);
 
     /* Cross-browser text gradient */
@@ -359,8 +359,6 @@
     }
 }
 
-
-
 .welcome-note {
     background-color: #f2f7f7;
     padding: 3rem 1rem;
@@ -376,7 +374,7 @@
 .note-title {
     font-size: 2rem;
     font-weight: 700;
-    color: #007bff;
+    color: #b46102;
     margin-bottom: 1rem;
 }
 
